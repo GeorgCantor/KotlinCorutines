@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
@@ -14,12 +15,13 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.georgcantor.kotlincorutines.R
 import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.*
 
 class MainListAdapter(
-    context: Context,
+    private val context: Context,
     private val articles: List<Article>
 ) : RecyclerView.Adapter<MainListAdapter.ListViewHolder>() {
 
@@ -40,7 +42,6 @@ class MainListAdapter(
     private var expandedArticle: Article? = null
     private var isScaledDown = false
 
-    /**Functions*/
     override fun getItemCount(): Int = articles.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
@@ -59,6 +60,12 @@ class MainListAdapter(
 
         holder.title.text = article.title
         holder.description.text = article.description
+
+        Glide.with(context)
+            .load(article.urlToImage)
+            .placeholder(R.drawable.ic_logo)
+            .thumbnail(0.1F)
+            .into(holder.image)
 
         holder.cardContainer.setOnClickListener {
             when (expandedArticle) {
@@ -191,15 +198,14 @@ class MainListAdapter(
         holder.listItemFg.alpha = progress
     }
 
-    /** Convenience method for calling from onBindViewHolder */
     private fun scaleDownItem(holder: ListViewHolder, position: Int, isScaleDown: Boolean) {
         setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
     }
 
-    /**ViewHolder*/
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView by bindView(R.id.title)
         val description: TextView by bindView(R.id.description)
+        val image: ImageView by bindView(R.id.image)
         val expandView: View by bindView(R.id.expand_view)
         val chevron: View by bindView(R.id.chevron)
         val cardContainer: View by bindView(R.id.card_container)
