@@ -20,7 +20,7 @@ import com.georgcantor.kotlincorutines.util.*
 
 class MainListAdapter(
     context: Context,
-    private val news: List<Article>
+    private val articles: List<Article>
 ) : RecyclerView.Adapter<MainListAdapter.ListViewHolder>() {
 
     private val originalBg: Int by bindColor(context, R.color.list_item_bg_collapsed)
@@ -30,41 +30,21 @@ class MainListAdapter(
     private val listItemVerticalPadding: Float by bindDimen(context, R.dimen.list_item_vertical_padding)
     private val originalWidth = context.screenWidth - 48.dp
     private val expandedWidth = context.screenWidth - 24.dp
-    private var originalHeight = -1 // will be calculated dynamically
-    private var expandedHeight = -1 // will be calculated dynamically
-
-    // filteredItems is a static field to simulate filtering of random items
-//    private val filteredItems = intArrayOf(2, 5, 6, 8, 12)
-//    private val modelList = List(20) { MainListModel(it) }
-//    private val modelListFiltered = modelList.filter { it.id !in filteredItems }
-//    private val adapterList: List<MainListModel> get() = if (isFiltered) modelListFiltered else modelList
-
-    /** Variable used to filter adapter items. 'true' if filtered and 'false' if not */
-//    var isFiltered = false
-//        set(value) {
-//            field = value
-//            val diff = MainListDiffUtil(
-//                if (field) modelList else modelListFiltered,
-//                if (field) modelListFiltered else modelList
-//            )
-//            DiffUtil.calculateDiff(diff).dispatchUpdatesTo(this)
-//        }
+    private var originalHeight = -1
+    private var expandedHeight = -1
 
     private val listItemExpandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     private lateinit var recyclerView: RecyclerView
-    private var expandedModel: Article? = null
+    private var expandedArticle: Article? = null
     private var isScaledDown = false
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Methods
-    ///////////////////////////////////////////////////////////////////////////
-
-    override fun getItemCount(): Int = news.size
+    /**Functions*/
+    override fun getItemCount(): Int = articles.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
-            ListViewHolder(inflater.inflate(R.layout.item_list, parent, false))
+        ListViewHolder(inflater.inflate(R.layout.item_list, parent, false))
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -72,36 +52,36 @@ class MainListAdapter(
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val model = news[position]
+        val article = articles[position]
 
-        expandItem(holder, model == expandedModel, animate = false)
+        expandItem(holder, article == expandedArticle, animate = false)
         scaleDownItem(holder, position, isScaledDown)
 
-        holder.title.text = model.title
-        holder.description.text = model.description
+        holder.title.text = article.title
+        holder.description.text = article.description
 
         holder.cardContainer.setOnClickListener {
-            when (expandedModel) {
+            when (expandedArticle) {
                 null -> {
                     // expand clicked view
                     expandItem(holder, expand = true, animate = true)
-                    expandedModel = model
+                    expandedArticle = article
                 }
-                model -> {
+                article -> {
                     // collapse clicked view
                     expandItem(holder, expand = false, animate = true)
-                    expandedModel = null
+                    expandedArticle = null
                 }
                 else -> {
                     // collapse previously expanded view
-                    val expandedModelPosition = news.indexOf(expandedModel!!)
+                    val expandedModelPosition = articles.indexOf(expandedArticle!!)
                     val oldViewHolder =
                         recyclerView.findViewHolderForAdapterPosition(expandedModelPosition) as? ListViewHolder
                     if (oldViewHolder != null) expandItem(oldViewHolder, expand = false, animate = true)
 
                     // expand clicked view
                     expandItem(holder, expand = true, animate = true)
-                    expandedModel = model
+                    expandedArticle = article
                 }
             }
         }
@@ -110,7 +90,7 @@ class MainListAdapter(
     private fun expandItem(holder: ListViewHolder, expand: Boolean, animate: Boolean) {
         if (animate) {
             val animator = getValueAnimator(
-                    expand, listItemExpandDuration, AccelerateDecelerateInterpolator()
+                expand, listItemExpandDuration, AccelerateDecelerateInterpolator()
             ) { progress -> setExpandProgress(holder, progress) }
 
             if (expand) animator.doOnStart { holder.expandView.isVisible = true }
@@ -159,10 +139,7 @@ class MainListAdapter(
         holder.chevron.rotation = 90 * progress
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Scale Down Animation
-    ///////////////////////////////////////////////////////////////////////////
-
+    /**Scale Down Animation*/
     private inline val LinearLayoutManager.visibleItemsRange: IntRange
         get() = findFirstVisibleItemPosition()..findLastVisibleItemPosition()
 
@@ -194,11 +171,10 @@ class MainListAdapter(
     }
 
     private fun setScaleDownProgress(holder: ListViewHolder, position: Int, progress: Float) {
-        val itemExpanded = position >= 0 && news[position] == expandedModel
+        val itemExpanded = position >= 0 && articles[position] == expandedArticle
         holder.cardContainer.layoutParams.apply {
             width = ((if (itemExpanded) expandedWidth else originalWidth) * (1 - 0.1f * progress)).toInt()
             height = ((if (itemExpanded) expandedHeight else originalHeight) * (1 - 0.1f * progress)).toInt()
-//            log("width=$width, height=$height [${"%.2f".format(progress)}]")
         }
         holder.cardContainer.requestLayout()
 
@@ -206,10 +182,10 @@ class MainListAdapter(
         holder.scaleContainer.scaleY = 1 - 0.05f * progress
 
         holder.scaleContainer.setPadding(
-                (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
-                (listItemVerticalPadding * (1 - 0.2f * progress)).toInt(),
-                (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
-                (listItemVerticalPadding * (1 - 0.2f * progress)).toInt()
+            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemHorizontalPadding * (1 - 0.2f * progress)).toInt(),
+            (listItemVerticalPadding * (1 - 0.2f * progress)).toInt()
         )
 
         holder.listItemFg.alpha = progress
@@ -220,10 +196,7 @@ class MainListAdapter(
         setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // ViewHolder
-    ///////////////////////////////////////////////////////////////////////////
-
+    /**ViewHolder*/
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView by bindView(R.id.title)
         val description: TextView by bindView(R.id.description)
