@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.georgcantor.kotlincorutines.R
+import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 import com.georgcantor.kotlincorutines.util.Constants.ARG_QUERY
+import com.georgcantor.kotlincorutines.util.EndlessScrollListener
 import kotlinx.android.synthetic.main.fragment_news.*
 import org.koin.android.ext.android.inject
 
@@ -26,6 +28,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val viewModel by inject<NewsViewModel>()
 
+    private var isFirstLoad = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val query = arguments?.getString(ARG_QUERY)
@@ -34,11 +38,25 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             getNews(query, 1)
 
             news.observe(viewLifecycleOwner, {
-                mainListAdapter = MainListAdapter(requireContext(), it)
-                recycler_view.adapter = mainListAdapter
-                recycler_view.setHasFixedSize(true)
-                updateRecyclerViewAnimDuration()
+                when (isFirstLoad) {
+                    true -> {
+                        mainListAdapter = MainListAdapter(requireContext(), it as MutableList<Article>)
+                        recycler_view.adapter = mainListAdapter
+                        recycler_view.setHasFixedSize(true)
+                        updateRecyclerViewAnimDuration()
+                        isFirstLoad = false
+                    }
+                    false -> it?.let { mainListAdapter.updateArticles(it) }
+                }
             })
+
+            val scrollListener = object : EndlessScrollListener() {
+                override fun onLoadMore(page: Int, totalItemsCount: Int) {
+                    getNews(query, page)
+                }
+            }
+
+            recycler_view.addOnScrollListener(scrollListener)
         }
     }
 

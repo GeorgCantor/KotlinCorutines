@@ -23,7 +23,7 @@ import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 
 class MainListAdapter(
     private val context: Context,
-    private val articles: List<Article>
+    private val articles: MutableList<Article>
 ) : RecyclerView.Adapter<MainListAdapter.ListViewHolder>() {
 
     private val originalBg: Int by bindColor(context, R.color.list_item_bg_collapsed)
@@ -93,6 +93,11 @@ class MainListAdapter(
                 }
             }
         }
+    }
+
+    fun updateArticles(articles: List<Article>) {
+        this.articles.addAll(articles)
+        notifyDataSetChanged()
     }
 
     private fun expandItem(holder: ListViewHolder, expand: Boolean, animate: Boolean) {

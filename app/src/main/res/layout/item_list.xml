@@ -46,7 +46,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@+id/title"
-                        android:layout_alignBottom="@+id/subtitle1"
+                        android:layout_alignBottom="@+id/title"
                         android:layout_marginEnd="16dp"
                         app:srcCompat="@drawable/ic_chevron_right"
                         app:tint="@color/title_color" />
@@ -61,33 +61,11 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         android:textStyle="bold"
                         tools:text="@tools:sample/lorem" />
 
-                <View
-                        android:id="@+id/subtitle1"
-                        android:layout_width="100dp"
-                        android:layout_height="10dp"
-                        android:layout_below="@id/title"
-                        android:layout_marginTop="8dp"
-                        android:layout_toEndOf="@id/chevron"
-                        android:background="@drawable/ic_pill"
-                        android:backgroundTint="@color/subtitle_color" />
-
-                <View
-                        android:id="@+id/subtitle2"
-                        android:layout_width="85dp"
-                        android:layout_height="10dp"
-                        android:layout_below="@id/title"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_toEndOf="@id/subtitle1"
-                        android:background="@drawable/ic_pill"
-                        android:backgroundTint="@color/subtitle_color" />
-
                 <LinearLayout
                         android:id="@+id/expand_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/subtitle2"
+                        android:layout_below="@id/title"
                         android:layout_alignStart="@id/title"
                         android:layout_marginTop="36dp"
                         android:layout_marginEnd="16dp"
