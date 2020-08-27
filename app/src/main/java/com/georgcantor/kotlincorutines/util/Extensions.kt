@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
+import android.net.ConnectivityManager
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
@@ -57,4 +58,10 @@ inline val View.screenWidth: Int
 fun View.setScale(scale: Float) {
     this.scaleX = scale
     this.scaleY = scale
+}
+
+fun Context.isNetworkAvailable(): Boolean {
+    val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+
+    return manager?.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }

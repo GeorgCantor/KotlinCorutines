@@ -51,15 +51,15 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         app:srcCompat="@drawable/ic_chevron_right"
                         app:tint="@color/title_color" />
 
-                <View
+                <TextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
-                        android:layout_height="10dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:layout_marginEnd="16dp"
                         android:layout_toEndOf="@id/chevron"
-                        android:background="@drawable/ic_pill"
-                        android:backgroundTint="@color/title_color" />
+                        android:textStyle="bold"
+                        tools:text="@tools:sample/lorem" />
 
                 <View
                         android:id="@+id/subtitle1"
@@ -93,7 +93,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         android:layout_marginEnd="16dp"
                         android:orientation="vertical"
                         android:visibility="gone"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
 
                     <LinearLayout
                             android:layout_width="match_parent"
@@ -102,16 +102,16 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                             android:orientation="horizontal"
                             android:padding="14dp">
 
-                        <View
-                                android:layout_width="0dp"
-                                android:layout_height="10dp"
+                        <TextView
+                                android:id="@+id/description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="2dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/ic_pill"
-                                android:backgroundTint="@color/title_color"
-                                android:transformPivotX="0dp" />
+                                android:transformPivotX="0dp"
+                                tools:text="@tools:sample/cities" />
 
                         <View
                                 android:layout_width="0dp"
