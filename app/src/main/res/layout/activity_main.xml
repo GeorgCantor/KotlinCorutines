@@ -31,8 +31,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:padding="16dp"
-                        android:tint="@color/toolbar_title_color"
-                        app:srcCompat="@drawable/ic_drawer_icon" />
+                        app:srcCompat="@drawable/ic_drawer_icon"
+                        app:tint="@color/toolbar_title_color" />
 
                 <View
                         android:id="@+id/toolbar_title"
@@ -41,7 +41,9 @@
                         android:layout_gravity="center"
                         android:background="@drawable/ic_pill"
                         android:backgroundTint="@color/toolbar_title_color" />
+
             </FrameLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,6 +52,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingTop="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/item_list" />
 

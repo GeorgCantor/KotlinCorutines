@@ -31,7 +31,6 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
             animation happens. card_container re-sizes height and width while
             scale_container scales the inside views to make it look natural
             -->
-
             <RelativeLayout
                     android:id="@+id/scale_container"
                     android:layout_width="match_parent"
@@ -49,8 +48,8 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         android:layout_alignTop="@+id/title"
                         android:layout_alignBottom="@+id/subtitle1"
                         android:layout_marginEnd="16dp"
-                        android:tint="@color/title_color"
-                        app:srcCompat="@drawable/ic_chevron_right" />
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="@color/title_color" />
 
                 <View
                         android:id="@+id/title"
@@ -129,6 +128,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                                 android:layout_weight="1.5"
                                 android:background="@drawable/ic_pill"
                                 android:backgroundTint="@color/subtitle_color" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -197,6 +197,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                                 android:layout_weight="1.5"
                                 android:background="@drawable/ic_pill"
                                 android:backgroundTint="@color/subtitle_color" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -231,8 +232,11 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                                 android:layout_weight="1.5"
                                 android:background="@drawable/ic_pill"
                                 android:backgroundTint="@color/subtitle_color" />
+
                     </LinearLayout>
+
                 </LinearLayout>
+
             </RelativeLayout>
 
             <View
@@ -243,6 +247,9 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                     android:background="@color/list_item_fg"
                     android:visibility="visible"
                     tools:visibility="gone" />
+
         </FrameLayout>
+
     </androidx.cardview.widget.CardView>
+
 </FrameLayout>
