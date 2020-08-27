@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="HardcodedText">
+
+    <com.google.android.material.navigation.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:visibility="visible"
+            tools:layout_gravity="start"
+            tools:visibility="visible">
+
+    </com.google.android.material.navigation.NavigationView>
+
+</merge>
