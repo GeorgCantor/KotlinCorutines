@@ -1,4 +1,4 @@
-package com.georgcantor.kotlincorutines.view
+package com.georgcantor.kotlincorutines.ui.fragment.news
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import com.georgcantor.kotlincorutines.repository.Repository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class NewsViewModel(
     private val repository: Repository
 ) : ViewModel() {
 
@@ -23,9 +23,9 @@ class MainViewModel(
         isProgressVisible.postValue(false)
     }
 
-    fun getNews(query: String, page: Int) {
+    fun getNews(query: String?, page: Int) {
         viewModelScope.launch(exceptionHandler) {
-            repository.getNews(query, page).apply {
+            repository.getNews(query ?: "", page).apply {
                 errorBody()?.let { error.postValue(it.toString()) }
                 news.postValue(body()?.articles)
             }

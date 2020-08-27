@@ -7,9 +7,13 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.net.ConnectivityManager
+import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.georgcantor.kotlincorutines.R
 
 inline fun getValueAnimator(
     forward: Boolean = true,
@@ -64,4 +68,12 @@ fun Context.isNetworkAvailable(): Boolean {
     val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
     return manager?.activeNetworkInfo?.isConnectedOrConnecting ?: false
+}
+
+fun AppCompatActivity.openFragment(fragment: Fragment) {
+    supportFragmentManager.beginTransaction().apply {
+        add(R.id.frame_container, fragment)
+        addToBackStack(null)
+        commit()
+    }
 }

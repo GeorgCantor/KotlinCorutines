@@ -2,7 +2,7 @@ package com.georgcantor.kotlincorutines.di
 
 import com.georgcantor.kotlincorutines.model.remote.ApiClient
 import com.georgcantor.kotlincorutines.repository.Repository
-import com.georgcantor.kotlincorutines.view.MainViewModel
+import com.georgcantor.kotlincorutines.ui.fragment.news.NewsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,6 +16,6 @@ val repositoryModule = module {
 
 val viewModelModule = module(override = true) {
     viewModel {
-        MainViewModel(get())
+        NewsViewModel(get())
     }
 }

@@ -1,4 +1,4 @@
-package com.georgcantor.kotlincorutines.view
+package com.georgcantor.kotlincorutines.ui.fragment.news
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.georgcantor.kotlincorutines.R
 import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.*
+import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 
 class MainListAdapter(
     private val context: Context,
@@ -35,7 +36,7 @@ class MainListAdapter(
     private var originalHeight = -1
     private var expandedHeight = -1
 
-    private val listItemExpandDuration: Long get() = (300L / animationPlaybackSpeed).toLong()
+    private val listItemExpandDuration: Long get() = (300L / ANIM_PLAYBACK_SPEED).toLong()
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     private lateinit var recyclerView: RecyclerView

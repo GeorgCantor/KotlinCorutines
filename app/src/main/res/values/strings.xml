@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">KotlinCorutines</string>
+    <string name="app_name">News</string>
+    <string name="article">Article</string>
+    <string name="internet_unavailable">Internet unavailable</string>
+    <string name="share_image">Share image</string>
+    <string name="business">Business</string>
+    <string name="sport">Sport</string>
+    <string name="science">Science</string>
+    <string name="choose_theme_text">Choose theme</string>
 </resources>
