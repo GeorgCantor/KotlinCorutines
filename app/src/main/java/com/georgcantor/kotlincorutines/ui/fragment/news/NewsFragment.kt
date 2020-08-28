@@ -21,7 +21,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private lateinit var mainListAdapter: MainListAdapter
+    private lateinit var newsAdapter: NewsAdapter
 
     private val loadingDuration: Long
         get() = (resources.getInteger(R.integer.loadingAnimDuration) / ANIM_PLAYBACK_SPEED).toLong()
@@ -40,13 +40,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             news.observe(viewLifecycleOwner, {
                 when (isFirstLoad) {
                     true -> {
-                        mainListAdapter = MainListAdapter(requireContext(), it as MutableList<Article>)
-                        recycler_view.adapter = mainListAdapter
+                        newsAdapter = NewsAdapter(requireContext(), it as MutableList<Article>)
+                        recycler_view.adapter = newsAdapter
                         recycler_view.setHasFixedSize(true)
                         updateRecyclerViewAnimDuration()
                         isFirstLoad = false
                     }
-                    false -> it?.let { mainListAdapter.updateArticles(it) }
+                    false -> it?.let { newsAdapter.updateArticles(it) }
                 }
             })
 

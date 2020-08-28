@@ -21,10 +21,10 @@ import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.*
 import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 
-class MainListAdapter(
+class NewsAdapter(
     private val context: Context,
     private val articles: MutableList<Article>
-) : RecyclerView.Adapter<MainListAdapter.ListViewHolder>() {
+) : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
 
     private val originalBg: Int by bindColor(context, R.color.list_item_bg_collapsed)
     private val expandedBg: Int by bindColor(context, R.color.list_item_bg_expanded)
