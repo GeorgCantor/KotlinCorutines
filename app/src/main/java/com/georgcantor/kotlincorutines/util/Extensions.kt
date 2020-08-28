@@ -7,13 +7,16 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.net.ConnectivityManager
-import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.georgcantor.kotlincorutines.R
+import com.google.android.material.transition.platform.MaterialArcMotion
+import com.google.android.material.transition.platform.MaterialContainerTransform
 
 inline fun getValueAnimator(
     forward: Boolean = true,
@@ -59,6 +62,15 @@ inline val Context.screenWidth: Int
 inline val View.screenWidth: Int
     get() = context!!.screenWidth
 
+fun View.getTransform(mEndView: View) = MaterialContainerTransform().apply {
+    startView = this@getTransform
+    endView = mEndView
+    addTarget(mEndView)
+    pathMotion = MaterialArcMotion()
+    duration = 550
+    scrimColor = Color.TRANSPARENT
+}
+
 fun View.setScale(scale: Float) {
     this.scaleX = scale
     this.scaleY = scale
@@ -68,6 +80,14 @@ fun Context.isNetworkAvailable(): Boolean {
     val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
     return manager?.activeNetworkInfo?.isConnectedOrConnecting ?: false
+}
+
+fun Context.loadImage(urlToImage: String?, imageView: ImageView) {
+    Glide.with(this)
+        .load(urlToImage)
+        .placeholder(R.drawable.ic_logo)
+        .thumbnail(0.1F)
+        .into(imageView)
 }
 
 fun AppCompatActivity.openFragment(fragment: Fragment) {

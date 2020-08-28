@@ -26,7 +26,6 @@ class ViewPagerFragment : Fragment(R.layout.fragment_view_pager) {
                 }
             }
         }
-
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
 
         view_pager.adapter = PagerAdapter(this)

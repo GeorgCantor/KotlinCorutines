@@ -1,6 +1,7 @@
 package com.georgcantor.kotlincorutines.ui.fragment.news
 
 import android.os.Bundle
+import android.transition.TransitionManager.beginDelayedTransition
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.georgcantor.kotlincorutines.R
@@ -8,6 +9,7 @@ import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 import com.georgcantor.kotlincorutines.util.Constants.ARG_QUERY
 import com.georgcantor.kotlincorutines.util.EndlessScrollListener
+import com.georgcantor.kotlincorutines.util.getTransform
 import kotlinx.android.synthetic.main.fragment_news.*
 import org.koin.android.ext.android.inject
 
@@ -40,7 +42,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             news.observe(viewLifecycleOwner, {
                 when (isFirstLoad) {
                     true -> {
-                        newsAdapter = NewsAdapter(requireContext(), it as MutableList<Article>)
+                        newsAdapter = NewsAdapter(
+                            requireContext(),
+                            it as MutableList<Article>
+                        ) { startView, endView, rootLayout ->
+                            beginDelayedTransition(rootLayout, startView.getTransform(endView))
+                        }
                         recycler_view.adapter = newsAdapter
                         recycler_view.setHasFixedSize(true)
                         updateRecyclerViewAnimDuration()

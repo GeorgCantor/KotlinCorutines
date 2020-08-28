@@ -53,7 +53,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
 
                 <TextView
                         android:id="@+id/title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:layout_marginEnd="16dp"
@@ -61,11 +61,20 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                         android:textStyle="bold"
                         tools:text="@tools:sample/lorem" />
 
+                <ImageView
+                        android:id="@+id/image_small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@+id/title"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+
                 <LinearLayout
                         android:id="@+id/expand_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/title"
+                        android:layout_below="@id/image_small"
                         android:layout_alignStart="@id/title"
                         android:layout_marginTop="36dp"
                         android:layout_marginEnd="16dp"

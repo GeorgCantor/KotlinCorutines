@@ -4,8 +4,11 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
@@ -15,7 +18,6 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.georgcantor.kotlincorutines.R
 import com.georgcantor.kotlincorutines.model.response.Article
 import com.georgcantor.kotlincorutines.util.*
@@ -23,7 +25,8 @@ import com.georgcantor.kotlincorutines.util.Constants.ANIM_PLAYBACK_SPEED
 
 class NewsAdapter(
     private val context: Context,
-    private val articles: MutableList<Article>
+    private val articles: MutableList<Article>,
+    private val transitionFunc: (View, View, FrameLayout) -> Unit
 ) : RecyclerView.Adapter<NewsAdapter.ListViewHolder>() {
 
     private val originalBg: Int by bindColor(context, R.color.list_item_bg_collapsed)
@@ -59,37 +62,44 @@ class NewsAdapter(
         expandItem(holder, article == expandedArticle, animate = false)
         scaleDownItem(holder, position, isScaledDown)
 
-        holder.title.text = article.title
-        holder.description.text = article.description
+        with(holder) {
+            title.text = article.title
+            description.text = article.description
 
-        Glide.with(context)
-            .load(article.urlToImage)
-            .placeholder(R.drawable.ic_logo)
-            .thumbnail(0.1F)
-            .into(holder.image)
+            context.loadImage(article.urlToImage, imageSmall)
+            context.loadImage(article.urlToImage, image)
 
-        holder.cardContainer.setOnClickListener {
-            when (expandedArticle) {
-                null -> {
-                    // expand clicked view
-                    expandItem(holder, expand = true, animate = true)
-                    expandedArticle = article
-                }
-                article -> {
-                    // collapse clicked view
-                    expandItem(holder, expand = false, animate = true)
-                    expandedArticle = null
-                }
-                else -> {
-                    // collapse previously expanded view
-                    val expandedModelPosition = articles.indexOf(expandedArticle!!)
-                    val oldViewHolder =
-                        recyclerView.findViewHolderForAdapterPosition(expandedModelPosition) as? ListViewHolder
-                    if (oldViewHolder != null) expandItem(oldViewHolder, expand = false, animate = true)
+            cardContainer.setOnClickListener {
+                when (expandedArticle) {
+                    null -> {
+                        // expand clicked view
+                        expandItem(this, expand = true, animate = true)
+                        expandedArticle = article
+                        transitionFunc(imageSmall, image, rootLayout)
+                        imageSmall.visibility = INVISIBLE
+                    }
+                    article -> {
+                        // collapse clicked view
+                        expandItem(this, expand = false, animate = true)
+                        expandedArticle = null
+                        transitionFunc(image, imageSmall, rootLayout)
+                        imageSmall.visibility = VISIBLE
+                    }
+                    else -> {
+                        // collapse previously expanded view
+                        val expandedModelPosition = articles.indexOf(expandedArticle!!)
+                        val oldViewHolder =
+                            recyclerView.findViewHolderForAdapterPosition(expandedModelPosition) as? ListViewHolder
+                        if (oldViewHolder != null) expandItem(
+                            oldViewHolder,
+                            expand = false,
+                            animate = true
+                        )
 
-                    // expand clicked view
-                    expandItem(holder, expand = true, animate = true)
-                    expandedArticle = article
+                        // expand clicked view
+                        expandItem(this, expand = true, animate = true)
+                        expandedArticle = article
+                    }
                 }
             }
         }
@@ -209,8 +219,10 @@ class NewsAdapter(
     }
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val rootLayout: FrameLayout by bindView(R.id.root_layout)
         val title: TextView by bindView(R.id.title)
         val description: TextView by bindView(R.id.description)
+        val imageSmall: ImageView by bindView(R.id.image_small)
         val image: ImageView by bindView(R.id.image)
         val expandView: View by bindView(R.id.expand_view)
         val chevron: View by bindView(R.id.chevron)
