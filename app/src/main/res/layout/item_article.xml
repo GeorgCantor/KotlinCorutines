@@ -87,6 +87,7 @@ we need to animate x and y values too. layout_gravity="center_horizontal" is a l
                             android:layout_width="match_parent"
                             android:layout_height="160dp"
                             android:scaleType="centerCrop"
+                            android:visibility="invisible"
                             tools:src="@tools:sample/avatars" />
 
                     <TextView

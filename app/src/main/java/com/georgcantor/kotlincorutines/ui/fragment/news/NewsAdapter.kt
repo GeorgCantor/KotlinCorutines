@@ -2,6 +2,7 @@ package com.georgcantor.kotlincorutines.ui.fragment.news
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -77,6 +78,7 @@ class NewsAdapter(
                         expandedArticle = article
                         transitionFunc(imageSmall, image, rootLayout)
                         imageSmall.visibility = INVISIBLE
+                        image.visibility = VISIBLE
                     }
                     article -> {
                         // collapse clicked view
@@ -95,10 +97,16 @@ class NewsAdapter(
                             expand = false,
                             animate = true
                         )
+                        image.visibility = INVISIBLE
 
                         // expand clicked view
                         expandItem(this, expand = true, animate = true)
                         expandedArticle = article
+                        Handler().postDelayed({
+                            transitionFunc(imageSmall, image, rootLayout)
+                            imageSmall.visibility = INVISIBLE
+                            image.visibility = VISIBLE
+                        }, 300)
                     }
                 }
             }
