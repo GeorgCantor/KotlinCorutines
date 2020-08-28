@@ -46,7 +46,7 @@ class NewsAdapter(
     override fun getItemCount(): Int = articles.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
-        ListViewHolder(inflater.inflate(R.layout.item_list, parent, false))
+        ListViewHolder(inflater.inflate(R.layout.item_article, parent, false))
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)

@@ -1,4 +1,4 @@
-package com.georgcantor.kotlincorutines.ui.fragment.home
+package com.georgcantor.kotlincorutines.ui.fragment.view_pager
 
 import android.os.Bundle
 import android.view.View
@@ -12,7 +12,7 @@ import com.georgcantor.kotlincorutines.util.Constants.SPORT_PAGE
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_view_pager.*
 
-class HomeViewPagerFragment : Fragment(R.layout.fragment_view_pager) {
+class ViewPagerFragment : Fragment(R.layout.fragment_view_pager) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +29,7 @@ class HomeViewPagerFragment : Fragment(R.layout.fragment_view_pager) {
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
 
-        view_pager.adapter = NewsPagerAdapter(this)
+        view_pager.adapter = PagerAdapter(this)
 
         TabLayoutMediator(tabs, view_pager) { tab, position ->
             tab.text = getTabTitle(position)
